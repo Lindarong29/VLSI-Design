@@ -1,3 +1,4 @@
+
 module fulladd_gate(
                     sum, c_out,
                     a, b, c_in
@@ -42,7 +43,7 @@ module fulladd22_gate(
                      );
 
                 output [22:0] sum; /*22bit sum + 1bit carry = 23bit ! 
-                                     c_outì„ ë”°ë¡œ ë‘ì§€ ì•Šê³ */
+                                     c_out¿? ¿?¿? ¿?¿? ¿?¿?*/
                 input  [21:0] a, b;
                 input  c_in;
 
@@ -51,9 +52,9 @@ module fulladd22_gate(
             genvar i;
             generate
                 for (i=0; i <22; i=i+1) begin : fa22
-                    if (i == 0) // sum[0] ì¼ ë•ŒëŠ” c_in -> carryë¡œ ë‚˜ê°€ë‹ˆê¹Œ
+                    if (i == 0) // sum[0] ¿? ¿?¿? c_in -> carry¿? ¿?¿?¿?¿?
                         fulladd_gate fa(sum[0], carry[0], a[0], b[0], c_in);
-                    else if (i == 21) // c_outì„ sum[22]ì— ë°”ë¡œ ì—°ê²°
+                    else if (i == 21) // c_out¿? sum[22]¿? ¿?¿? ¿?¿?
                         fulladd_gate fa(sum[21], sum[22], a[21], b[21], carry[20]); 
                     else
                         fulladd_gate fa(sum[i], carry[i], a[i], b[i], carry[i-1]);

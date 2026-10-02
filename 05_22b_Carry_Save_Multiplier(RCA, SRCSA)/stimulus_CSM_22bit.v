@@ -12,8 +12,8 @@ module stimulus_CSM_22bit;
 
 	integer i, k, err_rca, err_csa;
 
-	CSM_RCA_22bit      MULT0   (.mul(mul_out_rca), .a(a), .b(b), .clk(clk), .rstn(rstn));
-	CSM_SRCSA_22bit    MULT1   (.mul(mul_out_csa), .a(a), .b(b), .clk(clk), .rstn(rstn));
+	CSM_RCA_22bit_FF      MULT0   (.out(mul_out_rca), .a(a), .b(b), .clk(clk), .rstn(rstn));
+	//CSM_SRCSA_22bit    MULT1   (.mul(mul_out_csa), .a(a), .b(b), .clk(clk), .rstn(rstn));
 
 	always #5 clk <= ~clk;
 

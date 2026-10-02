@@ -12,7 +12,8 @@ module fulladd_gate(
             and (c1, a, b);
             and (s2, s1, c_in);
             xor (sum, s1, c_in);
-            xor (c_out, s2, c1);
+
+            or (c_out, s2, c1);
 
 endmodule
 
@@ -29,10 +30,10 @@ module fulladd4_gate(
 
                 wire   [3:0] carry;
                 
-            fulladd_gate fa0(sum[0], c1, a[0], b[0], c_in);
-            fulladd_gate fa1(sum[1], c2, a[1], b[1], c1);
-            fulladd_gate fa2(sum[2], c3, a[2], b[2], c2);
-            fulladd_gate fa3(sum[3], c_out, a[3], b[3], c3);
+            fulladd fa0(sum[0], c1, a[0], b[0], c_in);
+            fulladd fa1(sum[1], c2, a[1], b[1], c1);
+            fulladd fa2(sum[2], c3, a[2], b[2], c2);
+            fulladd fa3(sum[3], c_out, a[3], b[3], c3);
                         
 endmodule
 

@@ -13,10 +13,8 @@ endmodule
 
 
 // ── N-bit ripple
-module RCA_nbit #(parameter WIDTH = 2) (
-                        sum, c_out,
-                        a, b, c_in
-                 );
+module RCA_nbit #(parameter WIDTH = 2) 
+                 (sum, c_out, a, b, c_in);
 
                 output [WIDTH-1:0] sum;
                 output           c_out;
@@ -40,7 +38,7 @@ module RCA_nbit #(parameter WIDTH = 2) (
 endmodule
 
 // ── N-bit MUX
-module mux2_gate #(parameter WIDTH = 1) (
+module muxn_gate #(parameter WIDTH = 1) (
     output [WIDTH-1:0] y,
     input  [WIDTH-1:0] d0, d1,
     input               sel
@@ -84,31 +82,31 @@ module sqrt_carry_select_adder_22b (
     // Block1 [3:2] (2bit): dual + mux
     RCA_nbit #(2) blk1a(sum1a, c1a, a[3:2], b[3:2], 1'b0);
     RCA_nbit #(2) blk1b(sum1b, c1b, a[3:2], b[3:2], 1'b1);
-    mux2_gate  #(2) mux1  (sum[3:2], c1, sum1a, sum1b, c0);
-    mux2_gate  #(1) muxc1 (c1, c1a, c1b, c0);
+    muxn_gate  #(2) mux1  (sum[3:2], c1, sum1a, sum1b, c0);
+    muxn_gate  #(1) muxc1 (c1, c1a, c1b, c0);
 
     // Block2 [6:4] (3bit): dual + mux
     RCA_nbit #(3) blk2a(sum2a, c2a, a[6:4], b[6:4], 1'b0);
     RCA_nbit #(3) blk2b(sum2b, c2b, a[6:4], b[6:4], 1'b1);
-    mux2_gate  #(3) mux2  (sum[6:4], sum2a, sum2b, c1);
-    mux2_gate  #(1) muxc2 (c2, c2a, c2b, c1);
+    muxn_gate  #(3) mux2  (sum[6:4], sum2a, sum2b, c1);
+    muxn_gate  #(1) muxc2 (c2, c2a, c2b, c1);
 
     // Block3 [10:7] (4bit): dual + mux
     RCA_nbit #(4) blk3a(sum3a, c3a, a[10:7], b[10:7], 1'b0);
     RCA_nbit #(4) blk3b(sum3b, c3b, a[10:7], b[10:7], 1'b1);
-    mux2_gate  #(4) mux3  (sum[10:7], sum3a, sum3b, c2);
-    mux2_gate  #(1) muxc3 (c3, c3a, c3b, c2);
+    muxn_gate  #(4) mux3  (sum[10:7], sum3a, sum3b, c2);
+    muxn_gate  #(1) muxc3 (c3, c3a, c3b, c2);
 
     // Block4 [15:11] (5bit): dual + mux
     RCA_nbit #(5) blk4a(sum4a, c4a, a[15:11], b[15:11], 1'b0);
     RCA_nbit #(5) blk4b(sum4b, c4b, a[15:11], b[15:11], 1'b1);
-    mux2_gate  #(5) mux4  (sum[15:11], sum4a, sum4b, c3);
-    mux2_gate  #(1) muxc4 (c4, c4a, c4b, c3);
+    muxn_gate  #(5) mux4  (sum[15:11], sum4a, sum4b, c3);
+    muxn_gate  #(1) muxc4 (c4, c4a, c4b, c3);
 
     // Block5 [21:16] (6bit): dual + mux, 최종 carry는 sum[22]에 바로 연결
     RCA_nbit #(6) blk5a(sum5a, c5a, a[21:16], b[21:16], 1'b0);
     RCA_nbit #(6) blk5b(sum5b, c5b, a[21:16], b[21:16], 1'b1);
-    mux2_gate  #(6) mux5  (sum[21:16], sum5a, sum5b, c4);
-    mux2_gate  #(1) muxc5 (sum[22], c5a, c5b, c4);
+    muxn_gate  #(6) mux5  (sum[21:16], sum5a, sum5b, c4);
+    muxn_gate  #(1) muxc5 (sum[22], c5a, c5b, c4);
 
 endmodule
