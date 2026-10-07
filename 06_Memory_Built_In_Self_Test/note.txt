@@ -1,0 +1,47 @@
+
+[mem model (rflp1024x44mx3.v) 정보]
+
+        always@(posedge CLK)
+            begin
+                    r_nwrt <= NWRT;
+                    r_nce <= NCE;
+                    r_din <= DIN;
+                    r_addr <= A;
+                    
+            #0.1
+                    if(!r_nce && !r_nwrt)
+                    -> write;
+                    if(!r_nce && r_nwrt)
+                    -> read;
+                    
+                end
+
+    posedge CLK마다 현재의
+        NCE
+        NWRT
+        DIN
+        ADDR
+    를 SRAM이 받아감
+
+
+    R/W 동작
+        write : write_data = r_din;     수행
+        read  : do_reg = array[r_addr]; 수행
+
+
+[testbench (stimulus_Top_memory_control.v)정보]
+    
+    1. top_memory_ctrl TOP_MEM_TEST(out, clk, rstn);  
+     -> 만들 모듈 외부 interface :
+        module top_memory_ctrl(
+            output [43:0] out,
+            input         clk,
+            input         rstn
+            );
+
+    2. initial $readmemh("input.txt", TOP_MEM_TEST.memory.array);
+    ->  테스트벤치가 TOP_MEM_TEST.memory.array에 접근. 
+        top_memory_ctrl 내부에 memory라는 이름의 SRAM instance가 존재해야함
+            rflp1024x44mx3 memory (
+                ...
+            );
